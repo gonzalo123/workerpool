@@ -14,4 +14,3 @@ Experiment with pools and webworkers
 ```
 
 In the example I use a worker that sends xhr request to a api sever. In this case a simple Silex example.
-
