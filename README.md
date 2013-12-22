@@ -1,5 +1,6 @@
 WebWorker pool
 ========
+
 Experiment with pools and webworkers
 
 ```js
