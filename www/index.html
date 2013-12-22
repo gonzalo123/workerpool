@@ -1,0 +1,39 @@
+<html>
+<body>
+
+<a href="#" onclick="getWithWorker('http://localhost:8880/hello')">hello (worker)</a>
+<a href="#" onclick="get('http://localhost:8880/hello')">hello (direct)</a>
+
+<script src="js/ajax.js"></script>
+<script src="js/workerpool.js"></script>
+<script>
+    // new worker pool with 10 instances of the worker
+    var pool = new WorkerPool('js/worker.js', 10);
+
+    // register callback to worker's onmessage event
+    pool.registerOnMessage(function (e) {
+        console.log("Received (from worker): ", e.data);
+    });
+
+    // display in browser console the number of free workers
+    setInterval(function () {
+        console.log("free pool ids: " + pool.getFreeIds().length);
+    }, 500);
+
+    /////////////////
+    // link functions
+
+    // get request using the worker pool
+    function getWithWorker(resource) {
+        pool.postMessage({method: 'GET', resource: resource});
+    }
+
+    // simple request using ajax
+    function get(resource) {
+        getRequest(resource, function (xhr) {
+            console.log('Received (from ajax request): ', {status: xhr.status,  responseText: xhr.responseText});
+        });
+    }
+</script>
+</body>
+</html>
